@@ -1,28 +1,29 @@
 var express = require('express');
 var router = express.Router();
 
-var userDao =  require('./../db/usersDao');
+var UserDao = require('./../db/usersDao');
+var userDao = new UserDao();
 
 /* GET users listing. */
-router.post('/validate',async function(req, res, next) {
+router.post('/validate', async function (req, res, next) {
 
   var pwd = req.body.password;
   var email = req.body.emailId;
 
-  var result =  await userDao.findUserByEmail(email);
+  var result = await userDao.findUserByEmail(email);
 
-  if(result.password === pwd){
-  res.send(200);
-  } else{
-    res.send(500);
+  if (result.password === pwd) {
+    res.sendStatus(200);
+  } else {
+    res.sendStatus(500);
   }
 
 });
 
 
-router.post('/saveUser', async function(req, res, next) {
+router.post('/saveUser', async function (req, res, next) {
   var data = req.body;
-  let result = await userDao.saveUser(data.firstName,data.lastName,data.userName,data.emailId,data.password,data.isActive);
+  let result = await userDao.saveUser(data.firstName, data.lastName, data.userName, data.emailId, data.password, data.isActive);
 
   res.sendStatus(result);
 
