@@ -5,6 +5,11 @@ var UserService = require('../services/UserService');
 var userService = new UserService();
 
 
+router.get('/all',async function(req,res,next){
+  let result = await userService.getAll();
+  res.send(result)
+})
+
 router.post('/saveUser', async function (req, res, next) {
   var data = req.body;
   let result = await userService.saveUser(data);

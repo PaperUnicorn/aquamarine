@@ -25,6 +25,13 @@ class UserService {
 
     };
 
+    async getAll(){
+        var userDao = new UserDao();
+        var result = await userDao.getAll();
+        console.log(result);
+        return result;
+    };
+
 }
 
 module.exports = UserService;
