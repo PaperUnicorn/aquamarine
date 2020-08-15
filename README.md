@@ -1,11 +1,10 @@
 # AQUAMARINE
 A Fancy Project Tracking Software.
 
-## Getting started  
-This project will only work with versions of node below 12.
+## Getting started
 
 ### Prerequisites
-Need to have node @ 8.17.0 installed along with Postgresql and MongoDB
+Need to have node installed along with Postgresql 
 
 ### Installing
 For a basic installation clone the project and in the root of the project do. 
@@ -16,7 +15,7 @@ to start the server use
 
 > npm start
 
-This will start the server on `http://localhost:3000`
+This will start the server on `http://localhost:8000`
 
 ## Running tests 
 
