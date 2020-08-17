@@ -1,4 +1,4 @@
-const { getOne,getAll,getByEmail,getByName , save } = require('../model/User');
+const { getOne,getAll,getByEmail,getByName , save , update , deleteuser } = require('../model/User');
 var EncryptionDecryption = require('../Utils/bcrypt/encryptionDecryption');
 async function getUserById(id){
     const result = await getOne(id);
@@ -33,9 +33,29 @@ async function saveUser(data){
     return result;
 }
 
+async function updateUser(data){
+    var user = {};
+    user.firstName = data.firstName;
+    user.lastName = data.lastName;
+    user.userName = data.userName;
+    user.emailId = data.email;
+    const result = await update(user);
+    return result;
+}
+
+async function deleteUser(data){
+    const result = await deleteuser(data);
+    return result;
+}
+async function validateUser(user){
+    var result = await getByEmail(user.email);
+    var encryptionDecryption = new EncryptionDecryption();  
+    return encryptionDecryption.validate(user.password,result.password);
+}
+
 module.exports = {
      getUserById , getAllUsers, getUserByEmail ,getUserByName ,
-     saveUser
+     saveUser , validateUser , updateUser , deleteUser
     };
 
 
