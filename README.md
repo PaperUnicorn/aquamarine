@@ -20,8 +20,9 @@ change .env.sample to .env and adjust properties accordingly
 This will start the server on `http://localhost:8000`
 
 ## Running tests 
-
-> no tests written yet
+This project now uses cypress use 
+> npx cypress open
+to open cypress dashboard and run tests
 ## Deployment
 
 Check `.github/workflows/node.yml`
