@@ -9,7 +9,7 @@ router.get(path+'/all',async (req,res)=>{
     await uc.getAllUsers()
     .then(result => {
         if(result)res.status(200).send(result)
-        else res.status(200).send('empty set')
+        else res.status(404).send('Not Found')
     })
     .catch(error => {
         console.log(error)
@@ -22,7 +22,7 @@ router.get(path+'/:id',async (req,res)=>{
     await uc.getUserById(id)
     .then(result => {
         if(result)res.status(200).send(result)
-        else res.status(200).send('empty set')
+        else res.status(404).send('Not Found')
     })
     .catch(error => {
         res.status(500).send('some error occured')
