@@ -15,6 +15,8 @@ to start the server use
 
 > npm start
 
+change .env.sample to .env and adjust properties accordingly
+
 This will start the server on `http://localhost:8000`
 
 ## Running tests 

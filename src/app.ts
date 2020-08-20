@@ -1,0 +1,31 @@
+import express from 'express';
+import path from "path";
+import cookieParser from "cookie-parser";
+import logger from "morgan";
+import dotenv from "dotenv";
+import 'reflect-metadata';
+
+import config from './configuration/ormconfig';
+// initialize configuration
+dotenv.config();
+// only after configuring env can you call a conenction
+import { connection } from './configuration/connection'
+const conn = connection; //doing shady stuff
+
+const port = process.env.SERVER_PORT;
+
+import usersRouter from './routes/UserRoutes';
+
+const app = express();
+
+app.use(logger("dev"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+
+app.use("/", usersRouter);
+// start the express server
+app.listen( port, () => {
+	// tslint:disable-next-line:no-console
+	console.log( `server started at http://localhost:${ port }` );
+} );
