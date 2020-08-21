@@ -15,13 +15,19 @@ to start the server use
 
 > npm start
 
+to start the server for dev use
+
+> npm run start
+
 change .env.sample to .env and adjust properties accordingly
 
 This will start the server on `http://localhost:8000`
 
 ## Running tests 
 This project now uses cypress use 
+
 > npx cypress open
+
 to open cypress dashboard and run tests
 ## Deployment
 
