@@ -1,14 +1,14 @@
 import express from 'express';
-import ListController from './../controller/ListController';
+import TaskController from './../controller/TaskController';
 
 
 const router = express.Router();
-const controller = new ListController();
-const path = '/list';
+const controller = new TaskController();
+const path = '/task';
 
 
 router.get(path+'/all',async (req,res)=>{
-    await controller.getAllLists()
+    await controller.getAllTasks()
     .then(result => {
         if(result)res.status(200).send(result)
         else res.status(404).send('Not Found')
@@ -20,13 +20,13 @@ router.get(path+'/all',async (req,res)=>{
 });
 
 router.post(path+'/save',async (req,res)=>{
-    await controller.saveList(req.body)
+    await controller.saveTask(req.body)
     .then(result => {res.status(200).send(result)})
     .catch(error => {console.log(error);res.status(500).send('some error occured, detail : '+error.detail)})
 });
 
-router.get(path+'/boards',async (req,res)=>{
-    await controller.getBoardsOfList()
+router.get(path+'/lists',async (req,res)=>{
+    await controller.getListsOfTasks()
     .then(result => {
         if(result)res.status(200).send(result)
         else res.status(404).send('Not Found')
@@ -37,16 +37,5 @@ router.get(path+'/boards',async (req,res)=>{
     })
 });
 
-router.get(path+'/tasks/all',async (req,res)=>{
-    await controller.getTasksOfList()
-    .then(result => {
-        if(result)res.status(200).send(result)
-        else res.status(404).send('Not Found')
-    })
-    .catch(error => {
-        console.log(error)
-        res.status(500).send('some error occured')
-    })
-});
 
 export default router;

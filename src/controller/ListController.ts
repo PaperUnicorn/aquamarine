@@ -15,4 +15,8 @@ export default class ListController{
         return getConnection().getRepository(List).find({ relations : ['board']}) 
     }
 
+    async getTasksOfList(){
+        return getConnection().getRepository(List).find({ relations : ['tasks']})
+    }
+
 }

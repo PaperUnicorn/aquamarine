@@ -1,9 +1,8 @@
 import { PrimaryGeneratedColumn , Column , JoinColumn , OneToMany , Entity, ManyToOne } from 'typeorm';
-import { Board } from './Board';
-import { Task } from './Task';
+import { List } from './List';
 
 @Entity()
-export class List{
+export class Task{
 
     @PrimaryGeneratedColumn()
     id : number;
@@ -14,10 +13,7 @@ export class List{
     @Column()
     description : string;
 
-    @ManyToOne( type => Board , board => board.lists)
-    board : number;
-
-    @OneToMany( type => Task , task => task.list )
-    tasks : Task[]
+    @ManyToOne( type => List , list => list.tasks)
+    list : number;
 
 }
