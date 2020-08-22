@@ -1,7 +1,7 @@
 
 import conn  from './../configuration/postgres';
 import { getConnection } from 'typeorm';
-import EncryptionDecryption from '../Utils/bcrypt/encryptionDecryption';
+import EncryptionDecryption from '../utils/bcrypt/encryptionDecryption';
 import User from '../model/User';
 
 
