@@ -1,14 +1,14 @@
 import express from 'express';
-import TaskController from './../controller/TaskController';
+import TicketController from './../controller/TicketController';
 
 
 const router = express.Router();
-const controller = new TaskController();
-const path = '/task';
+const controller = new TicketController();
+const path = '/ticket';
 
 
 router.get(path+'/all',async (req,res)=>{
-    await controller.getAllTasks()
+    await controller.getAllTickets()
     .then(result => {
         if(result)res.status(200).send(result)
         else res.status(404).send('Not Found')
@@ -20,13 +20,13 @@ router.get(path+'/all',async (req,res)=>{
 });
 
 router.post(path+'/save',async (req,res)=>{
-    await controller.saveTask(req.body)
+    await controller.saveTicket(req.body)
     .then(result => {res.status(200).send(result)})
     .catch(error => {console.log(error);res.status(500).send('some error occured, detail : '+error.detail)})
 });
 
-router.get(path+'/lists',async (req,res)=>{
-    await controller.getListsOfTasks()
+router.get(path+'/tasks',async (req,res)=>{
+    await controller.getTasksOfTickets()
     .then(result => {
         if(result)res.status(200).send(result)
         else res.status(404).send('Not Found')
@@ -37,16 +37,5 @@ router.get(path+'/lists',async (req,res)=>{
     })
 });
 
-router.get(path+'/tickets/all',async (req,res)=>{
-    await controller.getTicketsOfTasks()
-    .then(result => {
-        if(result)res.status(200).send(result)
-        else res.status(404).send('Not Found')
-    })
-    .catch(error => {
-        console.log(error)
-        res.status(500).send('some error occured')
-    })
-});
 
 export default router;

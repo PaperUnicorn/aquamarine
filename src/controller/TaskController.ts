@@ -15,4 +15,8 @@ export default class TaskController{
         return getConnection().getRepository(Task).find({ relations : ['list']}) 
     }
 
+    async getTicketsOfTasks(){
+        return getConnection().getRepository(Task).find({relations:['tickets']});
+    }
+
 }

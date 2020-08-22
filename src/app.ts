@@ -19,6 +19,8 @@ import projectRouter from './routes/ProjectRoutes';
 import boardRouter from './routes/BoardRoutes';
 import listRouter from './routes/ListRoutes';
 import taskRouter from './routes/TaskRoutes';
+import ticketRouter from './routes/TicketRoutes';
+
 
 const app = express();
 
@@ -32,6 +34,7 @@ app.use("/",projectRouter);
 app.use("/",boardRouter);
 app.use("/",listRouter);
 app.use("/",taskRouter);
+app.use("/",ticketRouter);
 // start the express server
 app.listen( port, () => {
 	// tslint:disable-next-line:no-console
