@@ -1,14 +1,14 @@
 import express from 'express';
-import BoardController from './../controller/BoardController';
+import ListController from './../controller/ListController';
 
 
 const router = express.Router();
-const controller = new BoardController();
-const path = '/board';
+const controller = new ListController();
+const path = '/list';
 
 
 router.get(path+'/all',async (req,res)=>{
-    await controller.getAllBoards()
+    await controller.getAllLists()
     .then(result => {
         if(result)res.status(200).send(result)
         else res.status(404).send('Not Found')
@@ -20,26 +20,13 @@ router.get(path+'/all',async (req,res)=>{
 });
 
 router.post(path+'/save',async (req,res)=>{
-    await controller.saveBoard(req.body)
+    await controller.saveList(req.body)
     .then(result => {res.status(200).send(result)})
-    .catch(error => {console.log(error);res.status(500).send('some error occured')})
+    .catch(error => {console.log(error);res.status(500).send('some error occured, detail : '+error.detail)})
 });
 
-router.get(path+'/projects',async (req,res)=>{
-    await controller.getProjectsOfBoards()
-    .then(result => {
-        if(result)res.status(200).send(result)
-        else res.status(404).send('Not Found')
-    })
-    .catch(error => {
-        console.log(error)
-        res.status(500).send('some error occured')
-    })
-});
-
-
-router.get(path+'/lists',async (req,res)=>{
-    await controller.getListsOfBoards()
+router.get(path+'/boards',async (req,res)=>{
+    await controller.getBoardsOfList()
     .then(result => {
         if(result)res.status(200).send(result)
         else res.status(404).send('Not Found')

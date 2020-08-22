@@ -15,4 +15,8 @@ export default class BoardController{
         return getConnection().getRepository(Board).find({ relations : ['project']}) //we get user who created this project
     }
 
+    async getListsOfBoards(){
+        return getConnection().getRepository(Board).find({ relations : ['lists']}) 
+    }
+
 }

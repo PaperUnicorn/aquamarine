@@ -17,6 +17,7 @@ const port = process.env.SERVER_PORT;
 import usersRouter from './routes/UserRoutes';
 import projectRouter from './routes/ProjectRoutes';
 import boardRouter from './routes/BoardRoutes';
+import listRouter from './routes/ListRoutes';
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use(cookieParser());
 app.use("/", usersRouter);
 app.use("/",projectRouter);
 app.use("/",boardRouter);
+app.use("/",listRouter);
 // start the express server
 app.listen( port, () => {
 	// tslint:disable-next-line:no-console
