@@ -8,8 +8,13 @@ import config from './configuration/ormconfig';
 // initialize configuration
 dotenv.config();
 // only after configuring env can you call a conenction
-import { connection } from './configuration/connection'
+import { connection } from './configuration/connection';
 const conn = connection; //doing shady stuff
+
+
+var session = require('express-session');
+var passport = require('passport');
+require('./configuration/passports');
 
 const port = process.env.SERVER_PORT;
 
@@ -28,7 +33,22 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(session({
+	secret: process.env.SESSION_SECRET,
+	resave: false,
+	saveUninitialized: true,
+	store: new (require('connect-pg-simple')(session))(),
+	cookie: { 
+		secure: false,
+		maxAge: 60 * 60 * 1000 
+	} // 30 days
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
+
+
+//Routes
 app.use("/",usersRouter);
 app.use("/",projectRouter);
 app.use("/",boardRouter);

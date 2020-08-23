@@ -1,5 +1,6 @@
 import express from 'express';
 import UserController from './../controller/UserController';
+var passport = require('passport');
 
 const router = express.Router();
 const uc = new UserController();
@@ -57,11 +58,22 @@ router.get(path + '/activate/:id', async (req, res) => {
 });
 
 
-router.post(path + '/validate', async (req,res) => {
+// This Funtions gets JsonData in this format -> 
+// {	
+//     "username":"abc@xyz.com",  
+//     "password":"1234"
+// }
+// Currently accepts login using 'email'.. so username value should be emailId.
+router.post(path + '/validate', (req, res, next) => {
+    passport.authenticate('local', function (err: any, user: any, info: any) {
+        if (err) { return next(err); }
+        if (!user) { return res.status(500).send('UserName or password is incorrect'); }
 
-    await uc.validateUser(req.body.email,req.body.password)
-    .then(result => {res.status(200).send(result)})
-    .catch(error => {res.status(500).send(false)})
+        req.logIn(user, function (err) { 
+            if (err) { return next(err); }
+            return res.status(200).send("User SucessFully Authenticated");
+        });
+    })(req, res, next);
 });
 
 export default router;
