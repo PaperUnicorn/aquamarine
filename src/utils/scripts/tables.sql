@@ -1,19 +1,21 @@
-CREATE TABLE public.user_data
+CREATE TABLE public.user
 (
-    first_name character varying(255) COLLATE pg_catalog."default" NOT NULL,
-    last_name character varying(255) COLLATE pg_catalog."default",
-    user_name character varying(255) COLLATE pg_catalog."default",
+    id integer NOT NULL PRIMARY KEY,
+    firstName character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    lastName character varying(255) COLLATE pg_catalog."default",
+    userName character varying(255) COLLATE pg_catalog."default",
     email character varying(255) COLLATE pg_catalog."default" NOT NULL,
     password character varying(255) COLLATE pg_catalog."default" NOT NULL,
-    is_active boolean,
-    created_on timestamp with time zone,
-    last_updated_on timestamp with time zone,
-    CONSTRAINT user_data_pkey PRIMARY KEY (email)
+    isActive boolean,
+    createdOn timestamp with time zone,
+    lastUpdatedOn timestamp with time zone,
+    CONSTRAINT userName_unique UNIQUE (userName),
+    CONSTRAINT email_unique UNIQUE (email)
 )
 
 TABLESPACE pg_default;
 
-ALTER TABLE public.user_data
+ALTER TABLE public.user
     OWNER to postgres;
 
 -- Table: public.task
