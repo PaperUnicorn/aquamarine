@@ -18,7 +18,7 @@ export class Project{
     email: string; // primary key of User table to create a foreign key relation
 
     @OneToOne(type => User)
-    @JoinColumn({ name : 'email' })
+    @JoinColumn()
     user : User
 
     @OneToMany( type => Board , board => board.project )
