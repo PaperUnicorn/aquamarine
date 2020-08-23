@@ -1,4 +1,6 @@
-import { Column, Entity, Long, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Long, PrimaryGeneratedColumn, ManyToMany, JoinTable, OneToMany } from 'typeorm';
+import { Team } from './Team';
+import { UserTeamMapping } from './UserTeamMapping';
 
 @Entity()
 class User{
@@ -20,5 +22,8 @@ class User{
      createdOn : Date;
      @Column()
      lastUpdatedOn : Date;
+
+     @OneToMany(type => UserTeamMapping , userTeamMapping => userTeamMapping.user)
+     teams! : UserTeamMapping[];
 }
 export default User

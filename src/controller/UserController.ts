@@ -45,7 +45,8 @@ export default class UserController {
             "createdOn": new Date(),
             "lastUpdatedOn": new Date()
         }
-        return getConnection().getRepository(User).save(data);
+        return getConnection().getRepository(User).save(data).catch(error =>{console.log(error)});
+        
     }
 
     async deactivateUserById(id: string) {
