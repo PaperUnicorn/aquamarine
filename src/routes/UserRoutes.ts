@@ -5,53 +5,61 @@ const router = express.Router();
 const uc = new UserController();
 const path = '/user';
 
-router.get(path+'/all',async (req,res)=>{
+router.get(path + '/all', async (req, res) => {
     await uc.getAllUsers()
-    .then(result => {
-        if(result)res.status(200).send(result)
-        else res.status(404).send('Not Found')
-    })
-    .catch(error => {
-        console.log(error)
-        res.status(500).send('some error occured')
-    })
+        .then(result => {
+            if (result) res.status(200).send(result)
+            else res.status(404).send('Not Found')
+        })
+        .catch(error => {
+            console.log(error)
+            res.status(500).send('some error occured')
+        })
 });
 
-router.get(path+'/:id',async (req,res)=>{
+router.get(path + '/getUserById/:id', async (req, res) => {
     const id = req.params.id;
     await uc.getUserById(id)
-    .then(result => {
-        if(result)res.status(200).send(result)
-        else res.status(404).send('Not Found')
-    })
-    .catch(error => {
-        res.status(500).send('some error occured')
-    })
+        .then(result => {
+            if (result) res.status(200).send(result)
+            else res.status(404).send('Not Found')
+        })
+        .catch(error => {
+            res.status(500).send('some error occured')
+        })
 });
 
-router.post(path+'/save',async (req,res)=>{
+router.post(path + '/save', async (req, res) => {
     await uc.saveUser(req.body)
-    .then(result => {res.status(200).send(result)})
-    .catch(error => {res.status(500).send('some error occured')})
+        .then(result => { res.status(200).send(result) })
+        .catch(error => { res.status(500).send('some error occured') })
 });
 
-router.put(path+'/update',async (req,res)=>{
+router.put(path + '/update', async (req, res) => {
 
     await uc.getAllUsers()
-    .then(result => {res.status(200).send(result)})
-    .catch(error => {res.status(500).send('some error occured')})
+        .then(result => { res.status(200).send(result) })
+        .catch(error => { res.status(500).send('some error occured') })
 });
 
-router.delete(path+'/delete',async (req,res)=>{
-
-    await uc.getAllUsers()
-    .then(result => {res.status(200).send(result)})
-    .catch(error => {res.status(500).send('some error occured')})
+router.get(path + '/deActivate/:id', async (req, res) => {
+    const id = req.params.id;
+    await uc.deactivateUserById(id)
+        .then(result => { res.status(200).send(result) })
+        .catch(error => { res.status(500).send(error) })
 });
 
-router.get(path+'/auth/validate',async (req,res)=>{
+router.get(path + '/activate/:id', async (req, res) => {
+    const id = req.params.id;
+    await uc.activateUserById(id)
+        .then(result => { res.status(200).send(result) })
+        .catch(error => { res.status(500).send(error) })
+});
 
-    await uc.validateUser(req.body)
+
+router.post(path + '/validate', async (req,res) => {
+
+    await uc.validateUser(req.body.email,req.body.password)
     .then(result => {res.status(200).send(result)})
     .catch(error => {res.status(500).send(false)})
 });

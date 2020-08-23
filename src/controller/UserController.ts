@@ -1,53 +1,73 @@
-
-import conn  from './../configuration/postgres';
-import { getConnection } from 'typeorm';
 import EncryptionDecryption from '../utils/bcrypt/encryptionDecryption';
+import { getConnection, Long } from 'typeorm';
+
 import User from '../model/User';
 
-
 export default class UserController {
-    constructor(){}
-    async  getUserById(id : string){
-    
-        const row = await conn.oneOrNone('select * from user_data where email = $1',[id])
-                            .then(result => { console.log(result); return result})
-                            .catch(error => {console.log(error); return error;});
-        return row;
-    }
-    async  getAllUsers(){
-        const rowcount = getConnection().getRepository(User).find();
-        return rowcount;
+    constructor() { }
+
+    async getUserById(id: string) {
+        const user = await getConnection().getRepository(User).findOne({ id: id })
+            .then(result => { return result })
+            .catch(error => { return error; });
+        return user;
     }
 
-    async  getUserByEmail(id : string){
-        const row = await conn.oneOrNone('select * from user_data where email = $1',[id])
-                            .then(result => { console.log(result); return result})
-                            .catch(error => {console.log(error); return error;});
-        return row;
+    async getUserByEmail(email: string) {
+
+        const user = await getConnection().getRepository(User)
+            .createQueryBuilder("user").where("user.email = :email", { email: email }).getOne()
+            .then(result => { return result; })
+            .catch(error => { return error; });
+        return user;
     }
 
-    async  getUserByName(name : string){
-        const rows = await conn.one('select * from user_data where first_name = $1', name)
-                .then(e => { return e})
-                .catch(e => {console.log(e)});
-        return rows;
+    async getUserByUserName(name: string) {
+
+        const user = await getConnection().getRepository(User)
+            .createQueryBuilder("user").where("user.userName = :userName", { userName: name }).getOne()
+            .then(result => { return result })
+            .catch(e => { return e });
+        return user;
     }
-    async saveUser (data : User){
-        const util =new EncryptionDecryption();
+
+    async getAllUsers() {
+        const users = getConnection().getRepository(User).find();
+        return users;
+    }
+
+    async saveUser(data: User) {
+        const util = new EncryptionDecryption();
         data = {
             ...data,
-            "isActive" : true,
-            "password" :await util.encryptPassword(data.password),
-            "createdOn" :new Date(),
-            "lastUpdatedOn" : new Date()   
+            "is_active": true,
+            "password": await util.encryptPassword(data.password),
+            "createdOn": new Date(),
+            "lastUpdatedOn": new Date()
         }
         return getConnection().getRepository(User).save(data);
     }
 
-    async validateUser( data : any ){
-        const util =new EncryptionDecryption();
-        const user = await getConnection().getRepository(User).findOne(data.email);
-        return util.validate(data.password , user.password);
+    async deactivateUserById(id: string) {
+        return await getConnection().getRepository(User).createQueryBuilder("user")
+            .update(User).set({ is_active: false }).where("id = :id", { id: id }).execute()
+            .then(result => { console.log(result); return true })
+            .catch(error => { console.log(error); return false; });
+    }
+
+    async activateUserById(id: string) {
+        return await getConnection().getRepository(User).createQueryBuilder("user")
+            .update(User).set({ is_active: true }).where("id = :id", { id: id }).execute()
+            .then(result => { console.log(result); return true })
+            .catch(error => { console.log(error); return false; });
+    }
+
+    async validateUser(email: string, password: string) {
+        const util = new EncryptionDecryption();
+        const user = await getConnection().getRepository(User)
+            .createQueryBuilder("user").where("user.email = :email", { email: email }).getOne();
+
+        return util.validate(password, user.password);
     }
 
 }

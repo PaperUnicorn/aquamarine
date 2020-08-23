@@ -1,19 +1,21 @@
-import { PrimaryColumn,Column, Entity } from 'typeorm';
+import { Column, Entity, Long, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 class User{
+     @PrimaryGeneratedColumn()
+     id: Long;
      @Column()
      firstName : string;
      @Column()
      lastName : string;
-     @PrimaryColumn()
+     @Column({unique:true})
      email : string;
-     @Column()
+     @Column({unique:true})
      userName : string;
      @Column()
      password : string;
      @Column()
-     isActive : boolean;
+     is_active : boolean;
      @Column()
      createdOn : Date;
      @Column()
