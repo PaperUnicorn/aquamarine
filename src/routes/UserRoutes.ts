@@ -6,7 +6,7 @@ const uc = new UserController();
 const path = '/user_detail';
 
 router.get(path + '/allUser', async (req, res) => {
-    console.log(req.session);
+    console.log(req.session.passport);
     await uc.getAllUsers()
         .then(result => {
             if (result) res.status(200).send(result)
