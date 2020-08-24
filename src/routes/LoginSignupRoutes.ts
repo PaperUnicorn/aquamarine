@@ -20,19 +20,22 @@ router.post(path + '/register', async (req, res) => {
 // }
 // Currently accepts login using 'email'.Avobe Object key name can be configured in passports.ts
 // returns 401 for unauthorized
-router.post(path + '/login', passport.authenticate('local'), (req, res) => {
-    console.log(req.session);
+router.post(path + '/login', (req, res, next) => {
 
-    return res.status(200).send('Successfully Authenticated, this is ur JwtToken');
+    passport.authenticate('local', function (err: any, user: any, info: any) {
+        if (err) { return next(err); }
+        if (!user) { return res.status(401).send("Unauthorized"); }
+        req.logIn(user, function (err) {
+            if (err) { return next(err); }
+            return res.status(200).send("Authorized");
+        });
+    })(req, res, next);
+
 });
 
-function checkAuthenticated(req:any,res:any,next:any){
-	if(req.isAuthenticated()){
-		return next(); //forwarding to the requested route
-	} else{
-		return res.status(401).send("Unauthorized"); //FrontEnd should send Back to login/register page
-	}
-}
-
+router.get(path + "/logout", (req, res) => {
+    req.logout();
+    return res.status(200).send("Logout");
+})
 
 export default router;
