@@ -18,6 +18,7 @@ require('./configuration/passports');
 
 const port = process.env.SERVER_PORT;
 
+import loginSignupRouter from './routes/LoginSignupRoutes';
 import usersRouter from './routes/UserRoutes';
 import projectRouter from './routes/ProjectRoutes';
 import boardRouter from './routes/BoardRoutes';
@@ -40,8 +41,8 @@ app.use(session({
 	store: new (require('connect-pg-simple')(session))(),
 	cookie: { 
 		secure: false,
-		maxAge: 60 * 60 * 1000 
-	} // 30 days
+		maxAge: 24 * 60 * 60 * 1000 //24 hr
+	}
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -49,13 +50,23 @@ app.use(passport.session());
 
 
 //Routes
-app.use("/",usersRouter);
-app.use("/",projectRouter);
-app.use("/",boardRouter);
-app.use("/",listRouter);
-app.use("/",taskRouter);
-app.use("/",ticketRouter);
-app.use("/",teamRouter);
+app.use("/",loginSignupRouter);
+app.use("/",checkAuthenticated,usersRouter);
+app.use("/",checkAuthenticated,projectRouter);
+app.use("/",checkAuthenticated,boardRouter);
+app.use("/",checkAuthenticated,listRouter);
+app.use("/",checkAuthenticated,taskRouter);
+app.use("/",checkAuthenticated,ticketRouter);
+app.use("/",checkAuthenticated,teamRouter);
+
+
+function checkAuthenticated(req:any,res:any,next:any){
+	if(req.isAuthenticated()){
+		return next(); //forwarding to the requested route
+	} else{
+		return res.status(401).send("Unauthorized"); //FrontEnd should send Back to login/register page
+	}
+}
 
 // start the express server
 app.listen( port, () => {

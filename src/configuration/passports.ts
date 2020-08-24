@@ -6,8 +6,12 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 import { getConnection } from 'typeorm';
 
-passport.use(new LocalStrategy(
-     async (username: string, password: string, done: any) => {
+const customField = {
+    usernameField: 'username',
+    passwordField: 'password'
+}
+
+passport.use( new LocalStrategy(customField, async (username: string, password: string, done: any) => {
         await getConnection().getRepository(User).findOne({ email: username })
             .then(async user => {
                 if (!user) { return done(null, false) }
