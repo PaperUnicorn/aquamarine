@@ -4,7 +4,7 @@ var passport = require('passport');
 
 const router = express.Router();
 const uc = new UserController();
-const path = '/user';
+const path = '/auth';
 
 
 router.post(path + '/register', async (req, res) => {

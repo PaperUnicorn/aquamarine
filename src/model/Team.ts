@@ -1,7 +1,8 @@
-import { PrimaryGeneratedColumn , Column , JoinColumn , OneToOne , OneToMany , Entity, ManyToMany, JoinTable } from 'typeorm';
+import { PrimaryGeneratedColumn , Column , JoinColumn , OneToOne , OneToMany , Entity, ManyToMany, JoinTable, ManyToOne } from 'typeorm';
 import User from './User';
 import { type } from 'os';
 import { UserTeamMapping } from './UserTeamMapping';
+import { Project } from './Project';
 
 @Entity()
 export class Team{
@@ -17,4 +18,7 @@ export class Team{
 
     @OneToMany(type => UserTeamMapping , userTeamMapping => userTeamMapping.team)
     users! : UserTeamMapping[]; // @todo: why is ! used
+
+    @ManyToOne( type => Project , project => project.teams)
+    project : number;
 }

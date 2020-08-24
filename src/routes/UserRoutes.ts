@@ -3,9 +3,9 @@ import UserController from './../controller/UserController';
 
 const router = express.Router();
 const uc = new UserController();
-const path = '/user_detail';
+const path = '/user';
 
-router.get(path + '/allUser', async (req, res) => {
+router.get(path + '/all', async (req, res) => {
     console.log(req.session.passport);
     await uc.getAllUsers()
         .then(result => {
@@ -18,7 +18,7 @@ router.get(path + '/allUser', async (req, res) => {
         })
 });
 
-router.get(path + '/getUserById/:id', async (req, res) => {
+router.get(path + '/:id', async (req, res) => {
     const id = req.params.id;
     await uc.getUserById(id)
         .then(result => {
@@ -37,14 +37,14 @@ router.put(path + '/update', async (req, res) => {
         .catch(error => { res.status(500).send('some error occured') })
 });
 
-router.get(path + '/deActivate/:id', async (req, res) => {
+router.get(path + '/:id/deactivate', async (req, res) => {
     const id = req.params.id;
     await uc.deactivateUserById(id)
         .then(result => { res.status(200).send(result) })
         .catch(error => { res.status(500).send(error) })
 });
 
-router.get(path + '/activate/:id', async (req, res) => {
+router.get(path + '/:id/activate', async (req, res) => {
     const id = req.params.id;
     await uc.activateUserById(id)
         .then(result => { res.status(200).send(result) })
